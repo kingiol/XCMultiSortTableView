@@ -25,7 +25,7 @@
  */
 #import "ViewController.h"
 
-#import "XCMultiTableView.h"
+#import "XCMultiSortTableView.h"
 
 @interface ViewController () <XCMultiTableViewDataSource>
 

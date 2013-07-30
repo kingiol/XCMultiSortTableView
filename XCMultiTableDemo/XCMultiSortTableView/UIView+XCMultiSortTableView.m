@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 Kingiol. All rights reserved.
 //
 
-#import "UIView+XCMultiTableView.h"
+#import "UIView+XCMultiSortTableView.h"
 
 @implementation UIView (XCMultiTableView)
 

@@ -6,12 +6,12 @@
 //  Copyright (c) 2013年 Kingiol. All rights reserved.
 //
 
-#import "XCMultiTableView.h"
+#import "XCMultiSortTableView.h"
 
-#import "XCMultiTableViewDefault.h"
-#import "XCMultiTableViewBGScrollView.h"
+#import "XCMultiSortTableViewDefault.h"
+#import "XCMultiSortTableViewBGScrollView.h"
 
-#import "UIView+XCMultiTableView.h"
+#import "UIView+XCMultiSortTableView.h"
 
 #define AddHeightTo(v, h) { CGRect f = v.frame; f.size.height += h; v.frame = f; }
 

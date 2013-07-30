@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "XCMultiTableView.h"
+#import "XCMultiSortTableView.h"
 
 @interface XCMultiTableViewBGScrollView : UIScrollView
 

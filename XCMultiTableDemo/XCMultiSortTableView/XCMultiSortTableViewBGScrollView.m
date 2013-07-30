@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 Kingiol. All rights reserved.
 //
 
-#import "XCMultiTableViewBGScrollView.h"
+#import "XCMultiSortTableViewBGScrollView.h"
 
-#import "UIView+XCMultiTableView.h"
+#import "UIView+XCMultiSortTableView.h"
 
 @implementation XCMultiTableViewBGScrollView {
     NSMutableArray *lines;

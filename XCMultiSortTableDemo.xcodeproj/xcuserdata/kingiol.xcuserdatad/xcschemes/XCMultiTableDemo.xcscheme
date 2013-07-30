@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "623EE71517993551001B845F"
                BuildableName = "XCMultiTableDemo.app"
-               BlueprintName = "XCMultiTableDemo"
-               ReferencedContainer = "container:XCMultiTableDemo.xcodeproj">
+               BlueprintName = "XCMultiSortTableDemo"
+               ReferencedContainer = "container:XCMultiSortTableDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "623EE71517993551001B845F"
             BuildableName = "XCMultiTableDemo.app"
-            BlueprintName = "XCMultiTableDemo"
-            ReferencedContainer = "container:XCMultiTableDemo.xcodeproj">
+            BlueprintName = "XCMultiSortTableDemo"
+            ReferencedContainer = "container:XCMultiSortTableDemo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -53,8 +53,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "623EE71517993551001B845F"
             BuildableName = "XCMultiTableDemo.app"
-            BlueprintName = "XCMultiTableDemo"
-            ReferencedContainer = "container:XCMultiTableDemo.xcodeproj">
+            BlueprintName = "XCMultiSortTableDemo"
+            ReferencedContainer = "container:XCMultiSortTableDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -71,8 +71,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "623EE71517993551001B845F"
             BuildableName = "XCMultiTableDemo.app"
-            BlueprintName = "XCMultiTableDemo"
-            ReferencedContainer = "container:XCMultiTableDemo.xcodeproj">
+            BlueprintName = "XCMultiSortTableDemo"
+            ReferencedContainer = "container:XCMultiSortTableDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

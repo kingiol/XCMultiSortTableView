@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:XCMultiTableDemo.xcodeproj">
+      location = "self:XCMultiSortTableDemo.xcodeproj">
    </FileRef>
 </Workspace>
