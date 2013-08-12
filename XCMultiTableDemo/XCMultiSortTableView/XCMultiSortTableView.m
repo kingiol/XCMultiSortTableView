@@ -51,6 +51,8 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
     
     NSMutableDictionary *columnTapViewDict;
     
+    NSMutableDictionary *columnSortedTapFlags;
+    
     BOOL responseToNumberSections;
     BOOL responseContentTableCellWidth;
     BOOL responseNumberofContentColumns;
@@ -260,6 +262,12 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
             NSString *columnStr = [NSString stringWithFormat:@"%d_%d", section, i];
             [columnTapViewDict setObject:subView forKey:columnStr];
             
+            
+            if ([columnSortedTapFlags objectForKey:columnStr] == nil) {
+                [columnSortedTapFlags setObject:[NSNumber numberWithInt:TableColumnSortTypeNone] forKey:columnStr];
+            }
+            
+            
             UITapGestureRecognizer *contentHeaderGecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contentHeaderTap:)];
             
             [subView addGestureRecognizer:contentHeaderGecognizer];
@@ -324,6 +332,7 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
 - (void)reset {
     
     columnTapViewDict = [NSMutableDictionary dictionary];
+    columnSortedTapFlags = [NSMutableDictionary dictionary];
     
     [self accessDataSourceData];
     
@@ -406,6 +415,10 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
         
         NSString *columnStr = [NSString stringWithFormat:@"-1_%d", i];
         [columnTapViewDict setObject:view forKey:columnStr];
+        
+        if ([columnSortedTapFlags objectForKey:columnStr] == nil) {
+            [columnSortedTapFlags setObject:[NSNumber numberWithInt:TableColumnSortTypeNone] forKey:columnStr];
+        }
         
         [topHeaderScrollView addSubview:view];
     }
@@ -555,12 +568,43 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
     NSInteger section = indexPath.section;
     NSInteger column = indexPath.row;
     
-    //暂时屏蔽topHeader的排序事件
-    if (section == -1) return;
+    NSString *columnStr = [NSString stringWithFormat:@"%d_%d", section, column];
+    
+    NSInteger columnFlag = [[columnSortedTapFlags objectForKey:columnStr] integerValue];
+    
+    if (section == -1) {
+        NSUInteger rows = [self numberOfSections];
+        
+        if (columnFlag == TableColumnSortTypeNone || columnFlag == TableColumnSortTypeAsc) {
+            //变成倒序排列
+        }else {
+            //变成升序排列
+        }
+        
+        for (int i = 0; i < rows; i++) {
+            NSIndexPath *iPath = [NSIndexPath indexPathForRow:column inSection:i];
+            [self singleHeaderClick:iPath];
+        }
+    }else {
+        [self singleHeaderClick:indexPath];
+    }
+    
+    
+    [leftHeaderTableView reloadData];
+    [contentTableView reloadData];
+
+}
+
+- (void)singleHeaderClick:(NSIndexPath *)indexPath {
+    
+    NSInteger section = indexPath.section;
+    NSInteger column = indexPath.row;
+    
+    NSString *columnStr = [NSString stringWithFormat:@"%d_%d", section, column];
+    NSInteger columnFlag = [[columnSortedTapFlags objectForKey:columnStr] integerValue];
     
     NSArray *leftHeaderDataInSection = [leftHeaderDataArray objectAtIndex:section];
     NSArray *contentDataInSection = [contentDataArray objectAtIndex:section];
-    
     
     NSArray *sortContentData = [contentDataInSection sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         
@@ -586,13 +630,24 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
         int i = [index intValue];
         [sortLeftHeaderData addObject:[leftHeaderDataInSection objectAtIndex:i]];
     }
-
+    
+    if (columnFlag == TableColumnSortTypeNone || columnFlag == TableColumnSortTypeDesc) {
+        columnFlag = TableColumnSortTypeAsc;
+        NSLog(@"asc");
+    }else {
+        NSLog(@"desc");
+        columnFlag = TableColumnSortTypeDesc;
+        NSEnumerator *leftReverseEnumerator = [sortLeftHeaderData reverseObjectEnumerator];
+        NSEnumerator *contentReverseEvumerator = [sortContentData reverseObjectEnumerator];
+        sortLeftHeaderData = [NSMutableArray arrayWithArray:[leftReverseEnumerator allObjects]];
+        sortContentData = [NSArray arrayWithArray:[contentReverseEvumerator allObjects]];
+    }
+    
     [leftHeaderDataArray replaceObjectAtIndex:section withObject:sortLeftHeaderData];
     [contentDataArray replaceObjectAtIndex:section withObject:sortContentData];
     
-    [leftHeaderTableView reloadData];
-    [contentTableView reloadData];
-
+    [columnSortedTapFlags setObject:[NSNumber numberWithInt:columnFlag] forKey:columnStr];
+    
 }
 
 #pragma mark - other method

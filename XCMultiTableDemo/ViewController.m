@@ -80,7 +80,10 @@
         for (int j = 0; j < 5; j++) {
             if (j == 1) {
                 [ary addObject:[NSNumber numberWithInt:random() % 5]];
-            }else {
+            }else if (j == 2) {
+                [ary addObject:[NSNumber numberWithInt:random() % 10]];
+            }
+            else {
                 [ary addObject:[NSString stringWithFormat:@"column %d %d", i, j]];
             }
         }
@@ -92,7 +95,13 @@
     for (int i = 3; i < 10; i++) {
         NSMutableArray *ary = [NSMutableArray arrayWithCapacity:10];
         for (int j = 0; j < 5; j++) {
-            [ary addObject:[NSString stringWithFormat:@"column %d %d", i, j]];
+            if (j == 1) {
+                [ary addObject:[NSNumber numberWithInt:random() % 5]];
+            }else if (j == 2) {
+                [ary addObject:[NSNumber numberWithInt:random() % 5]];
+            }else {
+                [ary addObject:[NSString stringWithFormat:@"column %d %d", i, j]];
+            }
         }
         [twoR addObject:ary];
     }
