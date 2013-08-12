@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-NS_ENUM(NSUInteger, SortColumnType) {
+typedef NS_ENUM(NSUInteger, SortColumnType) {
     SortColumnTypeInteger,
     SortColumnTypeFloat,
     SortColumnTypeDate,

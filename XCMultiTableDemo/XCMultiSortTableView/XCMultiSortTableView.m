@@ -15,7 +15,7 @@
 
 #define AddHeightTo(v, h) { CGRect f = v.frame; f.size.height += h; v.frame = f; }
 
-NS_ENUM(NSUInteger, TableColumnSortType) {
+typedef NS_ENUM(NSUInteger, TableColumnSortType) {
     TableColumnSortTypeAsc,
     TableColumnSortTypeDesc,
     TableColumnSortTypeNone
@@ -575,16 +575,24 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
     if (section == -1) {
         NSUInteger rows = [self numberOfSections];
         
-        if (columnFlag == TableColumnSortTypeNone || columnFlag == TableColumnSortTypeAsc) {
-            //变成倒序排列
+        TableColumnSortType newType = TableColumnSortTypeNone;
+        
+        if (columnFlag == TableColumnSortTypeNone || columnFlag == TableColumnSortTypeDesc) {
+            newType = TableColumnSortTypeAsc;
         }else {
-            //变成升序排列
+            newType = TableColumnSortTypeDesc;
         }
         
         for (int i = 0; i < rows; i++) {
             NSIndexPath *iPath = [NSIndexPath indexPathForRow:column inSection:i];
+            
+            NSString *str = [NSString stringWithFormat:@"%d_%d", iPath.section, iPath.row];
+            [columnSortedTapFlags setObject:[NSNumber numberWithInt:columnFlag] forKey:str];
+            
             [self singleHeaderClick:iPath];
         }
+        [columnSortedTapFlags setObject:[NSNumber numberWithInt:newType] forKey:columnStr];
+        
     }else {
         [self singleHeaderClick:indexPath];
     }
@@ -633,9 +641,7 @@ NS_ENUM(NSUInteger, TableColumnSortType) {
     
     if (columnFlag == TableColumnSortTypeNone || columnFlag == TableColumnSortTypeDesc) {
         columnFlag = TableColumnSortTypeAsc;
-        NSLog(@"asc");
     }else {
-        NSLog(@"desc");
         columnFlag = TableColumnSortTypeDesc;
         NSEnumerator *leftReverseEnumerator = [sortLeftHeaderData reverseObjectEnumerator];
         NSEnumerator *contentReverseEvumerator = [sortContentData reverseObjectEnumerator];
