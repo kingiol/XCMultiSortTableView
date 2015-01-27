@@ -16,7 +16,7 @@
 #define AddHeightTo(v, h) { CGRect f = v.frame; f.size.height += h; v.frame = f; }
 
 typedef NS_ENUM(NSUInteger, TableColumnSortType) {
-    TableColumnSortTypeAsc,
+    TableColumnSortTypeAsc = 0,
     TableColumnSortTypeDesc,
     TableColumnSortTypeNone
 };
@@ -241,7 +241,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
         [view addGestureRecognizer:leftRecognizer];
     }else {
         NSUInteger count = [datasource arrayDataForTopHeaderInTableView:self].count;
-        for (int i = 0; i < count; i++) {
+        for (NSInteger i = 0; i < count; i++) {
             CGFloat cellW = [self accessContentTableViewCellWidth:i];
             CGFloat cellH = [tableView rectForHeaderInSection:section].size.height;
             
@@ -256,10 +256,10 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
                 subView.backgroundColor = [UIColor blackColor];
             }
             
-            NSString *tagStr = [NSString stringWithFormat:@"%d_%d", section, i];
+            NSString *tagStr = [NSString stringWithFormat:@"%@_%@", @(section), @(i)];
             subView.tag = (int)tagStr;
             
-            NSString *columnStr = [NSString stringWithFormat:@"%d_%d", section, i];
+            NSString *columnStr = [NSString stringWithFormat:@"%@_%@", @(section), @(i)];
             [columnTapViewDict setObject:subView forKey:columnStr];
             
             
@@ -384,7 +384,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
 - (void)setUpTopHeaderScrollView {
     
     NSUInteger count = [datasource arrayDataForTopHeaderInTableView:self].count;
-    for (int i = 0; i < count; i++) {
+    for (NSInteger i = 0; i < count; i++) {
         
         CGFloat topHeaderW = [self accessContentTableViewCellWidth:i];
         CGFloat topHeaderH = [self accessTopHeaderHeight];
@@ -400,7 +400,32 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
         label.text = [[datasource arrayDataForTopHeaderInTableView:self] objectAtIndex:i];
         
         [label sizeToFit];
-        label.center = CGPointMake(topHeaderW / 2.0f, topHeaderH / 2.0f);
+        
+        AlignHorizontalPosition alignPosition = AlignHorizontalPositionLeft;
+        if ([self.datasource respondsToSelector:@selector(tableView:inColumn:)]) {
+            alignPosition = [self.datasource tableView:self inColumn:i];
+        }
+        
+        switch (alignPosition) {
+            case AlignHorizontalPositionLeft:
+            {
+                CGFloat labelW = CGRectGetWidth(label.frame);
+                label.center = CGPointMake(labelW * 0.5, topHeaderH * 0.5);
+            }
+                break;
+            case AlignHorizontalPositionRight:
+            {
+                CGFloat labelW = CGRectGetWidth(label.frame);
+                label.center = CGPointMake(topHeaderW - labelW * 0.5, topHeaderH * 0.5);
+            }
+                break;
+            default:
+            {
+                label.center = CGPointMake(topHeaderW / 2.0f, topHeaderH / 2.0f);
+            }
+                break;
+        }
+        
         
         UIColor *color = [self headerBgColorColumn:i];
         view.backgroundColor = color;
@@ -495,7 +520,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
 
     NSMutableArray *ary = [[contentDataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-    for (int i = 0; i < count; i++) {
+    for (NSInteger i = 0; i < count; i++) {
         
         CGFloat cellW = [self accessContentTableViewCellWidth:i];
         CGFloat cellH = [self cellHeightInIndexPath:indexPath];
@@ -510,7 +535,32 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
         label.text = [NSString stringWithFormat:@"%@", [ary objectAtIndex:i]];
         
         [label sizeToFit];
-        label.center = CGPointMake(cellW / 2.0f, cellH / 2.0f);
+        
+        AlignHorizontalPosition alignPosition = AlignHorizontalPositionLeft;
+        if ([self.datasource respondsToSelector:@selector(tableView:inColumn:)]) {
+            alignPosition = [self.datasource tableView:self inColumn:i];
+        }
+        
+        switch (alignPosition) {
+            case AlignHorizontalPositionLeft:
+            {
+                CGFloat labelW = CGRectGetWidth(label.frame);
+                label.center = CGPointMake(labelW * 0.5, cellH * 0.5);
+            }
+                break;
+            case AlignHorizontalPositionRight:
+            {
+                CGFloat labelW = CGRectGetWidth(label.frame);
+                label.center = CGPointMake(cellW - labelW * 0.5, cellH * 0.5);
+            }
+                break;
+            default:
+            {
+                label.center = CGPointMake(cellW / 2.0f, cellH / 2.0f);
+            }
+                break;
+        }
+        
         
         UIColor *color = [self bgColorInSection:indexPath.section InRow:indexPath.row InColumn:i];
         
@@ -568,7 +618,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
     NSInteger section = indexPath.section;
     NSInteger column = indexPath.row;
     
-    NSString *columnStr = [NSString stringWithFormat:@"%d_%d", section, column];
+    NSString *columnStr = [NSString stringWithFormat:@"%@_%@", @(section), @(column)];
     
     NSInteger columnFlag = [[columnSortedTapFlags objectForKey:columnStr] integerValue];
     
@@ -583,11 +633,11 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
             newType = TableColumnSortTypeDesc;
         }
         
-        for (int i = 0; i < rows; i++) {
+        for (NSInteger i = 0; i < rows; i++) {
             NSIndexPath *iPath = [NSIndexPath indexPathForRow:column inSection:i];
             
-            NSString *str = [NSString stringWithFormat:@"%d_%d", iPath.section, iPath.row];
-            [columnSortedTapFlags setObject:[NSNumber numberWithInt:columnFlag] forKey:str];
+            NSString *str = [NSString stringWithFormat:@"%@_%@", @(iPath.section), @(iPath.row)];
+            [columnSortedTapFlags setObject:[NSNumber numberWithUnsignedInteger:columnFlag] forKey:str];
             
             [self singleHeaderClick:iPath];
         }
@@ -608,7 +658,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
     NSInteger section = indexPath.section;
     NSInteger column = indexPath.row;
     
-    NSString *columnStr = [NSString stringWithFormat:@"%d_%d", section, column];
+    NSString *columnStr = [NSString stringWithFormat:@"%@_%@", @(section), @(column)];
     NSInteger columnFlag = [[columnSortedTapFlags objectForKey:columnStr] integerValue];
     
     NSArray *leftHeaderDataInSection = [leftHeaderDataArray objectAtIndex:section];
@@ -652,7 +702,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
     [leftHeaderDataArray replaceObjectAtIndex:section withObject:sortLeftHeaderData];
     [contentDataArray replaceObjectAtIndex:section withObject:sortContentData];
     
-    [columnSortedTapFlags setObject:[NSNumber numberWithInt:columnFlag] forKey:columnStr];
+    [columnSortedTapFlags setObject:[NSNumber numberWithUnsignedInteger:columnFlag] forKey:columnStr];
     
 }
 
@@ -668,7 +718,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
 }
 
 - (NSString *)sectionToString:(NSUInteger)section {
-    return [NSString stringWithFormat:@"%d", section];
+    return [NSString stringWithFormat:@"%@", @(section)];
 }
 
 - (BOOL)foldedInSection:(NSUInteger)section {

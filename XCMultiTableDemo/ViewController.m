@@ -134,6 +134,15 @@
     return [leftTableData count];
 }
 
+- (AlignHorizontalPosition)tableView:(XCMultiTableView *)tableView inColumn:(NSInteger)column {
+    if (column == 0) {
+        return AlignHorizontalPositionCenter;
+    }else if (column == 1) {
+        return AlignHorizontalPositionRight;
+    }
+    return AlignHorizontalPositionLeft;
+}
+
 - (CGFloat)tableView:(XCMultiTableView *)tableView contentTableCellWidth:(NSUInteger)column {
     if (column == 0) {
         return 500.0f;

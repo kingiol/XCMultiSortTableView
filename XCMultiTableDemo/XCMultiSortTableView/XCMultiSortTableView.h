@@ -15,6 +15,12 @@ typedef NS_ENUM(NSUInteger, SortColumnType) {
     SortColumnTypeDate,
 };
 
+typedef NS_ENUM(NSUInteger, AlignHorizontalPosition) {
+    AlignHorizontalPositionLeft = 0,
+    AlignHorizontalPositionCenter,
+    AlignHorizontalPositionRight,
+};
+
 @protocol XCMultiTableViewDataSource;
 
 @interface XCMultiTableView : UIView
@@ -53,5 +59,6 @@ typedef NS_ENUM(NSUInteger, SortColumnType) {
 - (CGFloat)topHeaderHeightInTableView:(XCMultiTableView *)tableView;
 - (UIColor *)tableView:(XCMultiTableView *)tableView bgColorInSection:(NSUInteger)section InRow:(NSUInteger)row InColumn:(NSUInteger)column;
 - (UIColor *)tableView:(XCMultiTableView *)tableView headerBgColorInColumn:(NSUInteger)column;
+- (AlignHorizontalPosition)tableView:(XCMultiTableView *)tableView inColumn:(NSInteger)column;
 
 @end
