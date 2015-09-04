@@ -42,6 +42,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
     UITableView *contentTableView;
     UIView *vertexView;
 
+    UILabel *vertextLabel;
     
     NSMutableDictionary *sectionFoldedStatus;
     NSArray *columnPointCollection;
@@ -100,6 +101,11 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
         vertexView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self addSubview:vertexView];
         
+        vertextLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        vertextLabel.backgroundColor = [UIColor clearColor];
+        vertextLabel.textAlignment = NSTextAlignmentCenter;
+        [vertexView addSubview:vertextLabel];
+        
         topHeaderScrollView = [[XCMultiTableViewBGScrollView alloc] initWithFrame:CGRectZero];
         topHeaderScrollView.backgroundColor = [UIColor clearColor];
         topHeaderScrollView.parent = self;
@@ -144,6 +150,12 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
     
     if (leftHeaderEnable) {
         vertexView.frame = CGRectMake(0, 0, leftHeaderWidth, topHeaderHeight);
+        vertextLabel.frame = vertexView.bounds;
+        
+        if ([self.datasource respondsToSelector:@selector(vertexName)]) {
+            vertextLabel.text = [self.datasource vertexName];
+        }
+        
         topHeaderScrollView.frame = CGRectMake(leftHeaderWidth + boldSeperatorLineWidth, 0, superWidth - leftHeaderWidth - boldSeperatorLineWidth, topHeaderHeight);
         leftHeaderTableView.frame = CGRectMake(0, topHeaderHeight + boldSeperatorLineWidth, leftHeaderWidth, superHeight - topHeaderHeight - boldSeperatorLineWidth);
         contentScrollView.frame = CGRectMake(leftHeaderWidth + boldSeperatorLineWidth, topHeaderHeight + boldSeperatorLineWidth, superWidth - leftHeaderWidth - boldSeperatorLineWidth, superHeight - topHeaderHeight - boldSeperatorLineWidth);
@@ -438,7 +450,7 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
         
         [view addGestureRecognizer:topHeaderGecognizer];
         
-        NSString *columnStr = [NSString stringWithFormat:@"-1_%d", i];
+        NSString *columnStr = [NSString stringWithFormat:@"-1_%@", @(i)];
         [columnTapViewDict setObject:view forKey:columnStr];
         
         if ([columnSortedTapFlags objectForKey:columnStr] == nil) {

@@ -60,5 +60,6 @@ typedef NS_ENUM(NSUInteger, AlignHorizontalPosition) {
 - (UIColor *)tableView:(XCMultiTableView *)tableView bgColorInSection:(NSUInteger)section InRow:(NSUInteger)row InColumn:(NSUInteger)column;
 - (UIColor *)tableView:(XCMultiTableView *)tableView headerBgColorInColumn:(NSUInteger)column;
 - (AlignHorizontalPosition)tableView:(XCMultiTableView *)tableView inColumn:(NSInteger)column;
+- (NSString *)vertexName;
 
 @end

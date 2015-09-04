@@ -174,4 +174,8 @@
     return [UIColor clearColor];
 }
 
+- (NSString *)vertexName {
+    return @"Vertex";
+}
+
 @end
