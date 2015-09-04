@@ -22,6 +22,23 @@ Usage
     tableView.leftHeaderEnable = YES;
     tableView.datasource = self;
     [self.view addSubview:tableView];
+    
+Usage In Swift
+=========
+
+implement protocol like this:
+
+``` swift
+@objc(arrayDataForContentInTableView:InSection:)
+    func arrayDataForContentInTableView(tableView: XCMultiTableView!, inSection section: UInt) -> [AnyObject]! {
+        return [""]
+    }
+    
+    @objc(arrayDataForLeftHeaderInTableView:InSection:)
+    func arrayDataForLeftHeaderInTableView(tableView: XCMultiTableView!, inSection section: UInt) -> [AnyObject]! {
+        return [""]
+    }
+```
 
 Inspiration
 ===========
