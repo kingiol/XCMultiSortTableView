@@ -235,8 +235,14 @@ typedef NS_ENUM(NSUInteger, TableColumnSortType) {
     UITableView *target = nil;
     if (tableView == leftHeaderTableView) {
         target = contentTableView;
+        if ([self.delegate respondsToSelector:@selector(tableViewWithType:didSelectRowAtIndexPath:)]) {
+            [self.delegate tableViewWithType:MultiTableViewTypeLeft didSelectRowAtIndexPath:indexPath];
+        }
     }else if (tableView == contentTableView) {
         target = leftHeaderTableView;
+        if ([self.delegate respondsToSelector:@selector(tableViewWithType:didSelectRowAtIndexPath:)]) {
+            [self.delegate tableViewWithType:MultiTableViewTypeRight didSelectRowAtIndexPath:indexPath];
+        }
     }else {
         target = nil;
     }

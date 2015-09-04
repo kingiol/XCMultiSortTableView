@@ -27,7 +27,7 @@
 
 #import "XCMultiSortTableView.h"
 
-@interface ViewController () <XCMultiTableViewDataSource>
+@interface ViewController () <XCMultiTableViewDataSource, XCMultiTableViewDelegate>
 
 @end
 
@@ -47,6 +47,7 @@
     XCMultiTableView *tableView = [[XCMultiTableView alloc] initWithFrame:CGRectInset(self.view.bounds, 5.0f, 5.0f)];
     tableView.leftHeaderEnable = YES;
     tableView.datasource = self;
+    tableView.delegate = self;
     [self.view addSubview:tableView];
     
 }
@@ -176,6 +177,12 @@
 
 - (NSString *)vertexName {
     return @"Vertex";
+}
+
+#pragma mark - XCMultiTableViewDelegate
+
+- (void)tableViewWithType:(MultiTableViewType)tableViewType didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"tableViewType:%@, selectedIndexPath: %@", @(tableViewType), indexPath);
 }
 
 @end

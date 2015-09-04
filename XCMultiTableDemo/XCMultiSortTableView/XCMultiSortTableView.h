@@ -21,7 +21,13 @@ typedef NS_ENUM(NSUInteger, AlignHorizontalPosition) {
     AlignHorizontalPositionRight,
 };
 
+typedef NS_ENUM(NSUInteger, MultiTableViewType) {
+    MultiTableViewTypeLeft = 0,
+    MultiTableViewTypeRight,
+};
+
 @protocol XCMultiTableViewDataSource;
+@protocol XCMultiTableViewDelegate;
 
 @interface XCMultiTableView : UIView
 
@@ -39,9 +45,16 @@ typedef NS_ENUM(NSUInteger, AlignHorizontalPosition) {
 @property (nonatomic, assign) BOOL leftHeaderEnable;
 
 @property (nonatomic, weak) id<XCMultiTableViewDataSource> datasource;
+@property (nonatomic, weak) id<XCMultiTableViewDelegate> delegate;
 
 
 - (void)reloadData;
+
+@end
+
+@protocol XCMultiTableViewDelegate <NSObject>
+
+- (void)tableViewWithType:(MultiTableViewType)tableViewType didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
